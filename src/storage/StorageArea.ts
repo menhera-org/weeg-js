@@ -36,4 +36,4 @@ export enum StorageArea {
    * Profile-managed storage area (readonly).
    */
   MANAGED,
-};
+}

@@ -66,7 +66,7 @@ export class ExtensionStorage {
     return values[key];
   }
 
-  async set(aKey: string, aValue: any) {
+  async set(aKey: string, aValue) {
     const key = this.#getKey(aKey);
     await this.#storage.set({
       [key]: aValue,
@@ -83,7 +83,7 @@ export class ExtensionStorage {
     return value !== undefined;
   }
 
-  observe(aKey: string, aObserver: (value: any) => void, aReportCurrentValue: boolean = true) {
+  observe(aKey: string, aObserver: (value) => void, aReportCurrentValue = true) {
     const key = this.#getKey(aKey);
     if (aReportCurrentValue) {
       this.get(aKey).then((value) => {
