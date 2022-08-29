@@ -65,12 +65,7 @@ export class ConfigurationOption<T> {
     await storage.set(this.#key, aValue);
   }
 
-  observe(aObserver: (value: T) => void) {
-    (async () => {
-      const currentValue = await this.get();
-      aObserver(currentValue);
-    })();
-    
+  #observeManaged(aObserver: (value: T) => void) {
     managed.observe(this.#key, async (managedValue) => {
       if (managedValue !== undefined) {
         aObserver(managedValue);
@@ -91,7 +86,9 @@ export class ConfigurationOption<T> {
 
       aObserver(this.#defaultValue);
     }, false);
+  }
 
+  #observeLocal(aObserver: (value: T) => void) {
     local.observe(this.#key, async (localValue) => {
       const managedValue = await managed.get(this.#key);
       if (managedValue !== undefined) {
@@ -112,7 +109,9 @@ export class ConfigurationOption<T> {
 
       aObserver(this.#defaultValue);
     }, false);
+  }
 
+  #observeSync(aObserver: (value: T) => void) {
     sync.observe(this.#key, async (syncValue) => {
       const managedValue = await managed.get(this.#key);
       if (managedValue !== undefined) {
@@ -133,5 +132,16 @@ export class ConfigurationOption<T> {
 
       aObserver(this.#defaultValue);
     }, false);
+  }
+
+  observe(aObserver: (value: T) => void) {
+    (async () => {
+      const currentValue = await this.get();
+      aObserver(currentValue);
+    })();
+    
+    this.#observeManaged(aObserver);
+    this.#observeLocal(aObserver);
+    this.#observeSync(aObserver);
   }
 }
