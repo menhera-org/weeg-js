@@ -20,60 +20,28 @@
 
 import browser from 'webextension-polyfill';
 import { UserContext } from './UserContext';
-import { Int32 } from "../types";
+import { SortedUserContextList } from './SortedUserContextList';
+import { UserContextSortOrder } from './UserContextSortOrder';
 
 /**
  * Provides sorted access to UserContext instances.
  */
 export class UserContextProvider {
-  private order: Int32.Int32[];
-  public constructor() {
-    this.order = [];
-  }
-
-  /**
-   * Set the order of user contexts.
-   */
-  public setOrder(order: Int32.Int32[]): void {
-    this.order = order;
-  }
-
-  /**
-   * Returns the current order of user contexts.
-   */
-  public async getOrder(): Promise<Int32.Int32[]> {
-    const userContexts = await this.getAllDefined();
-    return userContexts.map((userContext) => userContext.id);
-  }
-
-  private sort(userContexts: UserContext[]): UserContext[] {
-    const copiedUserContexts = [... userContexts];
-    copiedUserContexts.sort((a, b) => {
-      const aIndex = this.order.indexOf(a.id);
-      const bIndex = this.order.indexOf(b.id);
-      if (aIndex < 0 && bIndex < 0) {
-        return a.id - b.id;
-      }
-      if (aIndex < 0) {
-        return 1;
-      }
-      if (bIndex < 0) {
-        return -1;
-      }
-      return aIndex - bIndex;
-    });
-    return copiedUserContexts;
+  private sortOrder: UserContextSortOrder;
+  public constructor(sortOrder: UserContextSortOrder) {
+    this.sortOrder = sortOrder;
   }
 
   /**
    * Returns the list of currently defined user contexts.
    */
-  public async getAllDefined(): Promise<UserContext[]> {
+   public async getAllDefined(): Promise<SortedUserContextList> {
     const userContexts = (await browser.contextualIdentities.query({}))
     .map((contextualIdentity) => {
       const userContextId = UserContext.fromCookieStoreId(contextualIdentity.cookieStoreId);
       return new UserContext(userContextId, contextualIdentity.name, contextualIdentity.color, contextualIdentity.colorCode, contextualIdentity.icon, contextualIdentity.iconUrl);
     });
-    return this.sort(userContexts);
+    const list = new SortedUserContextList(this.sortOrder, userContexts);
+    return list;
   }
 }
