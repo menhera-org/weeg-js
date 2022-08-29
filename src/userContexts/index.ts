@@ -18,6 +18,5 @@
   limitations under the License.
 */
 
-export * as storage from './storage';
-export * as types from './types';
-export * as userContexts from './userContexts';
+export { UserContext } from './UserContext';
+export { UserContextProvider } from './UserContextProvider';
