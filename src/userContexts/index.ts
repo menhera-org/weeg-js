@@ -20,3 +20,5 @@
 
 export { UserContext } from './UserContext';
 export { UserContextProvider } from './UserContextProvider';
+export { SortedUserContextList } from './SortedUserContextList';
+export { UserContextSortOrder } from './UserContextSortOrder';
