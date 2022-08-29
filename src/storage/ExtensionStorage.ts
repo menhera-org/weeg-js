@@ -57,6 +57,7 @@ export class ExtensionStorage {
     return this.#prefix + aKey;
   }
 
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   async get(aKey: string): Promise<any> {
     const key = this.#getKey(aKey);
     const values = await this.#storage.get(key);
@@ -66,6 +67,7 @@ export class ExtensionStorage {
     return values[key];
   }
 
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   async set(aKey: string, aValue: any) {
     const key = this.#getKey(aKey);
     await this.#storage.set({
@@ -83,6 +85,7 @@ export class ExtensionStorage {
     return value !== undefined;
   }
 
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   observe(aKey: string, aObserver: (value: any) => void, aReportCurrentValue = true) {
     const key = this.#getKey(aKey);
     if (aReportCurrentValue) {
