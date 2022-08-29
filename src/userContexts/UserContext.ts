@@ -68,6 +68,9 @@ export class UserContext {
     }
   }
 
+  /**
+   * Converts a user context ID to a cookie store ID.
+   */
   public static toCookieStoreId(userContextId: Int32.Int32): string {
     if (userContextId < 0) {
       throw new TypeError('Invalid user context ID');
