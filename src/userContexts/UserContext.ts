@@ -43,6 +43,9 @@ const fromCookieStoreId = (cookieStoreId: string) => {
   }
 };
 
+/**
+ * Represents a user context (contextual identity or container).
+ */
 export class UserContext {
   static readonly ID_UNSPECIFIED = -1 as Int32.Int32;
 

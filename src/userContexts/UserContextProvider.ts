@@ -22,16 +22,25 @@ import browser from 'webextension-polyfill';
 import { UserContext } from './UserContext';
 import { Int32 } from "../types";
 
+/**
+ * Provides sorted access to UserContext instances.
+ */
 export class UserContextProvider {
   private order: Int32.Int32[];
   public constructor() {
     this.order = [];
   }
 
+  /**
+   * Set the order of user contexts.
+   */
   public setOrder(order: Int32.Int32[]): void {
     this.order = order;
   }
 
+  /**
+   * Returns the current order of user contexts.
+   */
   public async getOrder(): Promise<Int32.Int32[]> {
     const userContexts = await this.getAllDefined();
     return userContexts.map((userContext) => userContext.id);
@@ -56,6 +65,9 @@ export class UserContextProvider {
     return copiedUserContexts;
   }
 
+  /**
+   * Returns the list of currently defined user contexts.
+   */
   public async getAllDefined(): Promise<UserContext[]> {
     const userContexts = (await browser.contextualIdentities.query({}))
     .map((contextualIdentity) => {
