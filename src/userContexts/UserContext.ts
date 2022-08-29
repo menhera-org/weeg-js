@@ -21,34 +21,25 @@
 import browser from 'webextension-polyfill';
 import { Int32 } from "../types";
 
-const toCookieStoreId = (userContextId: Int32.Int32) => {
-  if (userContextId < 0) {
-    throw new TypeError('Invalid user context ID');
-  }
-  if (userContextId == 0) {
-    return 'firefox-default';
-  }
-  return 'firefox-container-' + userContextId;
-};
-
-const fromCookieStoreId = (cookieStoreId: string) => {
-  if (cookieStoreId == 'firefox-default') {
-    return 0 as Int32.Int32;
-  }
-  const matches = String(cookieStoreId || '').match(/^firefox-container-([0-9]+)$/);
-  if (!matches) {
-    throw new TypeError('Invalid cookie store ID');
-  } else {
-    return Int32.toInt32(Number(matches[1]));
-  }
-};
 
 /**
  * Represents a user context (contextual identity or container).
  */
 export class UserContext {
+  /**
+   * Invalid user context ID.
+   */
   public static readonly ID_UNSPECIFIED = -1 as Int32.Int32;
+
+  /**
+   * User context ID for "No Container" container (0).
+   */
   public static readonly ID_DEFAULT = 0 as Int32.Int32;
+
+  /**
+   * "No Container" container.
+   */
+  public static readonly DEFAULT: UserContext = UserContext.createIncompleteUserContext(UserContext.ID_DEFAULT);
 
   /**
    * Returns true if the given id is a valid user context id.
@@ -66,7 +57,25 @@ export class UserContext {
    * Converts a cookie store ID to a user context ID.
    */
   public static fromCookieStoreId(cookieStoreId: string): Int32.Int32 {
-    return fromCookieStoreId(cookieStoreId);
+    if (cookieStoreId == 'firefox-default') {
+      return 0 as Int32.Int32;
+    }
+    const matches = String(cookieStoreId || '').match(/^firefox-container-([0-9]+)$/);
+    if (!matches) {
+      throw new TypeError('Invalid cookie store ID');
+    } else {
+      return Int32.toInt32(Number(matches[1]));
+    }
+  }
+
+  public static toCookieStoreId(userContextId: Int32.Int32): string {
+    if (userContextId < 0) {
+      throw new TypeError('Invalid user context ID');
+    }
+    if (userContextId == 0) {
+      return 'firefox-default';
+    }
+    return 'firefox-container-' + userContextId;
   }
 
   /**
@@ -124,7 +133,7 @@ export class UserContext {
    * The cookie store ID for the identity.
    */
   public get cookieStoreId(): string {
-    return toCookieStoreId(this.id);
+    return UserContext.toCookieStoreId(this.id);
   }
 
   /**

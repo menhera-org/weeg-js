@@ -22,6 +22,7 @@ import browser from 'webextension-polyfill';
 import { UserContext } from './UserContext';
 import { SortedUserContextList } from './SortedUserContextList';
 import { UserContextSortOrder } from './UserContextSortOrder';
+import { Int32 } from '../types';
 
 /**
  * Provides sorted access to UserContext instances.
@@ -32,15 +33,37 @@ export class UserContextProvider {
     this.sortOrder = sortOrder;
   }
 
+  private contextualIdentityToUserContext(contextualIdentity: browser.ContextualIdentities.ContextualIdentity): UserContext {
+    const userContextId = UserContext.fromCookieStoreId(contextualIdentity.cookieStoreId);
+    return new UserContext(userContextId, contextualIdentity.name, contextualIdentity.color, contextualIdentity.colorCode, contextualIdentity.icon, contextualIdentity.iconUrl);
+  }
+
+  /**
+   * Returns the user context specified by an id.
+   */
+  public async get(userContextId: Int32.Int32): Promise<UserContext> {
+    if (userContextId == UserContext.ID_DEFAULT) {
+      return UserContext.DEFAULT;
+    }
+    const cookieStoreId = UserContext.toCookieStoreId(userContextId);
+    try {
+      const contextualIdentity = await browser.contextualIdentities.get(cookieStoreId);
+      if (!contextualIdentity) {
+        throw new Error('This should not happen, however...');
+      }
+      return this.contextualIdentityToUserContext(contextualIdentity);
+    } catch (_e) {
+      return UserContext.createIncompleteUserContext(userContextId);
+    }
+  }
+
   /**
    * Returns the list of currently defined user contexts.
    */
    public async getAllDefined(): Promise<SortedUserContextList> {
     const userContexts = (await browser.contextualIdentities.query({}))
-    .map((contextualIdentity) => {
-      const userContextId = UserContext.fromCookieStoreId(contextualIdentity.cookieStoreId);
-      return new UserContext(userContextId, contextualIdentity.name, contextualIdentity.color, contextualIdentity.colorCode, contextualIdentity.icon, contextualIdentity.iconUrl);
-    });
+    .map((contextualIdentity) => this.contextualIdentityToUserContext(contextualIdentity));
+    userContexts.push(UserContext.DEFAULT);
     const list = new SortedUserContextList(this.sortOrder, userContexts);
     return list;
   }
