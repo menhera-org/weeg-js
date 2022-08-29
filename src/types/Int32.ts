@@ -18,5 +18,11 @@
   limitations under the License.
 */
 
-export * as storage from './storage';
-export * as types from './types';
+type Opaque<T, K> = T & { __opaque__: K };
+export type Int32 = Opaque<number, 'Int32'>;
+
+export const isInt32 = (value: number): value is Int32 => Object.is(value, 0|value);
+export const toInt32 = (value: number): Int32 => {
+  const intValue = 0|value;
+  return intValue as Int32;
+};

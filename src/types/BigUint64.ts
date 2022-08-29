@@ -18,5 +18,11 @@
   limitations under the License.
 */
 
-export * as storage from './storage';
-export * as types from './types';
+type Opaque<T, K> = T & { __opaque__: K };
+export type BigUint64 = Opaque<bigint, 'BigUint64'>;
+
+export const isBigUint64 = (value: bigint): value is BigUint64 => value === toBigUint64(value);
+export const toBigUint64 = (value: bigint): BigUint64 => {
+  const intValue = 0xffffffffffffffffn & value;
+  return intValue as BigUint64;
+};

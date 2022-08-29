@@ -18,5 +18,8 @@
   limitations under the License.
 */
 
-export * as storage from './storage';
-export * as types from './types';
+/* TODO: Move to rewritten es-first-aid */
+export * as Int32 from './Int32';
+export * as Uint32 from './Uint32';
+export * as BigInt64 from './BigInt64';
+export * as BigUint64 from './BigUint64';
