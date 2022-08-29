@@ -8,6 +8,7 @@
     ],
     "module": "commonjs",
     "sourceMap": true,
+    "declaration": true,
     "outDir": "./dist",
     "newLine": "lf",
     "esModuleInterop": true,
