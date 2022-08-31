@@ -21,42 +21,27 @@
 type Opaque<T, K> = T & { __opaque__: K };
 export type Uint32 = Opaque<number, 'Uint32'>;
 
-const arr = new Uint32Array(1);
-
 export const isUint32 = (value: number): value is Uint32 => Object.is(value, toUint32(value));
 export const toUint32 = (value: number): Uint32 => {
-  arr[0] = value;
-  return arr[0] as Uint32;
+  return (value >>> 0) as Uint32;
 };
 
 /**
  * Equivalent to `toUint32(~value)`.
  */
-export const not = (value: Uint32): Uint32 => {
-  arr[0] = ~value;
-  return arr[0] as Uint32;
-};
+export const not = (value: Uint32): Uint32 => toUint32(~value);
 
 /**
  * Equivalent to `toUint32(value1 ^ value2)`.
  */
-export const xor = (value1: Uint32, value2: Uint32): Uint32 => {
-  arr[0] = value1 ^ value2;
-  return arr[0] as Uint32;
-};
+export const xor = (value1: Uint32, value2: Uint32): Uint32 => toUint32(value1 ^ value2);
 
 /**
  * Equivalent to `toUint32(value1 & value2)`.
  */
-export const and = (value1: Uint32, value2: Uint32): Uint32 => {
-  arr[0] = value1 & value2;
-  return arr[0] as Uint32;
-};
+export const and = (value1: Uint32, value2: Uint32): Uint32 => toUint32(value1 & value2);
 
 /**
  * Equivalent to `toUint32(value1 | value2)`.
  */
-export const or = (value1: Uint32, value2: Uint32): Uint32 => {
-  arr[0] = value1 | value2;
-  return arr[0] as Uint32;
-};
+export const or = (value1: Uint32, value2: Uint32): Uint32 => toUint32(value1 | value2);
