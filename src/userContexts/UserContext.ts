@@ -151,10 +151,8 @@ export class UserContext {
    */
   public isIncomplete(): boolean {
     // name may be empty in legitimate containers.
-    if (this.color == '') return true;
-    if (this.colorCode == '') return true;
-    if (this.icon == '') return true;
-    if (this.iconUrl == '') return true;
+    if (this.color == '' || this.colorCode == '') return true;
+    if (this.icon == '' || this.iconUrl == '') return true;
     return false;
   }
 
