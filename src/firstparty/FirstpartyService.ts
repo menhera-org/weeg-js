@@ -67,6 +67,7 @@ const parseList = (text: string) => {
 export class FirstpartyService {
   private rules = new Set<string>;
   private exceptionRules = new Set<string>;
+  private initialized = false;
 
   constructor() {
     //
@@ -75,6 +76,7 @@ export class FirstpartyService {
   importRules(rules: string[], exceptionRules: string[]) {
     this.rules = new Set(rules);
     this.exceptionRules = new Set(exceptionRules);
+    this.initialized = true;
   }
 
   exportRules(): {rules: string[], exceptionRules: string[]} {
@@ -90,6 +92,10 @@ export class FirstpartyService {
     const text = await fetchList();
     const {rules, exceptionRules} = parseList(text);
     this.importRules(rules, exceptionRules);
+  }
+
+  isInitialized(): boolean {
+    return this.initialized;
   }
 
   /**
