@@ -64,7 +64,7 @@ const parseList = (text: string) => {
  * Rule updates are asynchronous, so if you try to access the rules too early,
  * you may get an empty list.
  */
-export class FirstpartyService {
+export class RegistrableDomainResolver {
   private rules = new Set<string>;
   private exceptionRules = new Set<string>;
   private initialized = false;
@@ -99,10 +99,10 @@ export class FirstpartyService {
   }
 
   /**
-   * Returns the firstparty domain for the given domain.
+   * Returns the registrable domain for the given domain.
    * @param domain The domain to check. This must be encoded with Punycode.
    */
-  getFirstpartyDomain(domain: string): string {
+  getRegistrableDomain(domain: string): string {
     const names = domain.split('.');
     for (let i = 2; i <= names.length; i++) {
       const domain = names.slice(-i).join('.');
@@ -127,6 +127,7 @@ export class FirstpartyService {
         return childDomain;
       }
     }
+    // The rule '*'.
     return names.slice(-2).join('.');
   }
 }
