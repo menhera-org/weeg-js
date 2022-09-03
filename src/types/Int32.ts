@@ -22,7 +22,7 @@ type Opaque<T, K> = T & { __opaque__: K };
 export type Int32 = Opaque<number, 'Int32'>;
 
 /**
- * Test if a value is an Int32. This throws on bigints (use Number(bigint)).
+ * Test if a value is an Int32. This throws on bigints.
  * @param value The number to test.
  * @returns true if the value is an Int32.
  */
