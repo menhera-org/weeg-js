@@ -36,7 +36,7 @@ export const isUint32 = (value: number): value is Uint32 => Object.is(value, toU
 export const toUint32 = (value: number): Uint32 => (value >>> 0) as Uint32;
 
 /**
- * Converts a string to an Uint32.
+ * Converts a string to a Uint32.
  * @param value the value to convert to a Uint32.
  * @returns the converted value.
  */

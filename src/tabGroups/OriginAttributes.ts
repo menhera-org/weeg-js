@@ -125,7 +125,7 @@ export class OriginAttributes {
     if (this.userContextId !== 0) {
       parts.push(`userContextId=${this.userContextId}`);
     }
-    if (this.privateBrowsingId !== 0) {
+    if (this.isPrivateBrowsing()) {
       parts.push(`privateBrowsingId=${this.privateBrowsingId}`);
     }
     return '^' + parts.join('&');
