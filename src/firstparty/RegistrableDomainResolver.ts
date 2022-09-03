@@ -94,6 +94,10 @@ export class RegistrableDomainResolver {
     this.importRules(rules, exceptionRules);
   }
 
+  /**
+   * Returns if the rules have been initialized.
+   * @returns true if the rules have been initialized.
+   */
   isInitialized(): boolean {
     return this.initialized;
   }
