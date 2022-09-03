@@ -19,7 +19,7 @@
 */
 
 import browser from 'webextension-polyfill';
-import { Int32 } from "../types";
+import { Uint32 } from '../types';
 
 
 /**
@@ -27,14 +27,9 @@ import { Int32 } from "../types";
  */
 export class UserContext {
   /**
-   * Invalid user context ID.
-   */
-  public static readonly ID_UNSPECIFIED = -1 as Int32.Int32;
-
-  /**
    * User context ID for "No Container" container (0).
    */
-  public static readonly ID_DEFAULT = 0 as Int32.Int32;
+  public static readonly ID_DEFAULT = 0 as Uint32.Uint32;
 
   /**
    * "No Container" container.
@@ -44,11 +39,11 @@ export class UserContext {
   /**
    * Returns true if the given id is a valid user context id.
    */
-  public static validateUserContextId(id: Int32.Int32): boolean {
+  public static validateUserContextId(id: Uint32.Uint32): boolean {
     return 0 <= id;
   }
 
-  public static createIncompleteUserContext(id: Int32.Int32): UserContext {
+  public static createIncompleteUserContext(id: Uint32.Uint32): UserContext {
     const defined = id == UserContext.ID_DEFAULT;
     return new UserContext(id, '', '', '', '', '', defined);
   }
@@ -56,22 +51,22 @@ export class UserContext {
   /**
    * Converts a cookie store ID to a user context ID.
    */
-  public static fromCookieStoreId(cookieStoreId: string): Int32.Int32 {
+  public static fromCookieStoreId(cookieStoreId: string): Uint32.Uint32 {
     if (cookieStoreId == 'firefox-default') {
-      return 0 as Int32.Int32;
+      return 0 as Uint32.Uint32;
     }
     const matches = String(cookieStoreId || '').match(/^firefox-container-([0-9]+)$/);
     if (!matches) {
       throw new TypeError('Invalid cookie store ID');
     } else {
-      return Int32.toInt32(Number(matches[1]));
+      return Uint32.toUint32(Number(matches[1]));
     }
   }
 
   /**
    * Converts a user context ID to a cookie store ID.
    */
-  public static toCookieStoreId(userContextId: Int32.Int32): string {
+  public static toCookieStoreId(userContextId: Uint32.Uint32): string {
     if (userContextId < 0) {
       throw new TypeError('Invalid user context ID');
     }
@@ -84,7 +79,7 @@ export class UserContext {
   /**
    * The user context ID for the identity.
    */
-  public readonly id: Int32.Int32;
+  public readonly id: Uint32.Uint32;
 
   /**
    * Name of the identity.
@@ -119,7 +114,7 @@ export class UserContext {
   /**
    * This is not intended to be called directly.
    */
-  public constructor(id: Int32.Int32, name: string, color: string, colorCode: string, icon: string, iconUrl: string, defined = true) {
+  public constructor(id: Uint32.Uint32, name: string, color: string, colorCode: string, icon: string, iconUrl: string, defined = true) {
     if (!UserContext.validateUserContextId(id)) {
       throw new TypeError('Invalid user context id');
     }

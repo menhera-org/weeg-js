@@ -22,7 +22,7 @@ import browser from 'webextension-polyfill';
 import { UserContext } from './UserContext';
 import { SortedUserContextList } from './SortedUserContextList';
 import { UserContextSortOrder } from './UserContextSortOrder';
-import { Int32 } from '../types';
+import { Uint32 } from '../types';
 
 /**
  * Provides sorted access to UserContext instances.
@@ -41,7 +41,7 @@ export class UserContextProvider {
   /**
    * Returns the user context specified by an id.
    */
-  public async get(userContextId: Int32.Int32): Promise<UserContext> {
+  public async get(userContextId: Uint32.Uint32): Promise<UserContext> {
     if (userContextId == UserContext.ID_DEFAULT) {
       return UserContext.DEFAULT;
     }

@@ -18,13 +18,13 @@
   limitations under the License.
 */
 
-import { Int32 } from "../types";
+import { Uint32 } from "../types";
 import { UserContext } from "./UserContext";
 import { UserContextSortOrder } from './UserContextSortOrder';
 
 export class SortedUserContextList implements Iterable<UserContext> {
   private sortOrder: UserContextSortOrder;
-  private userContextMap = new Map<Int32.Int32, UserContext>();
+  private userContextMap = new Map<Uint32.Uint32, UserContext>();
 
   public constructor(sortOrder: UserContextSortOrder, userContexts: Iterable<UserContext>) {
     this.sortOrder = sortOrder;
@@ -33,11 +33,11 @@ export class SortedUserContextList implements Iterable<UserContext> {
     }
   }
 
-  public get(userContextId: Int32.Int32): UserContext | undefined {
+  public get(userContextId: Uint32.Uint32): UserContext | undefined {
     return this.userContextMap.get(userContextId);
   }
 
-  public has(userContextId: Int32.Int32): boolean {
+  public has(userContextId: Uint32.Uint32): boolean {
     return this.userContextMap.has(userContextId);
   }
 

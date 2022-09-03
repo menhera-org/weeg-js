@@ -18,12 +18,12 @@
   limitations under the License.
 */
 
-import { Int32 } from "../types";
+import { Uint32 } from "../types";
 import { UserContext } from "./UserContext";
 import { UserContextProvider } from './UserContextProvider';
 
 export class UserContextSortOrder {
-  private order: Int32.Int32[];
+  private order: Uint32.Uint32[];
   public constructor() {
     this.order = [];
   }
@@ -31,14 +31,14 @@ export class UserContextSortOrder {
   /**
    * Set the order of user contexts.
    */
-  public setOrder(order: Int32.Int32[]): void {
+  public setOrder(order: Uint32.Uint32[]): void {
     this.order = order;
   }
 
   /**
    * Returns the current order of user contexts.
    */
-  public async getOrder(): Promise<Int32.Int32[]> {
+  public async getOrder(): Promise<Uint32.Uint32[]> {
     const provider = new UserContextProvider(this);
     const userContexts = [... await provider.getAllDefined()];
     return userContexts.map((userContext) => userContext.id);
