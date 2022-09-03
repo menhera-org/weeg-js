@@ -34,3 +34,16 @@ export const isInt32 = (value: number): value is Int32 => Object.is(value, 0|val
  * @returns the Int32 value.
  */
 export const toInt32 = (value: number): Int32 => (0|value) as Int32;
+
+/**
+ * Converts a string to an Int32.
+ * @param value the value to convert to a Int32.
+ * @returns the converted value.
+ */
+export const fromString = (value: string): Int32 => {
+  const result = parseInt(value, 10);
+  if (!isInt32(result)) {
+    throw new Error(`Invalid Int32: ${value}`);
+  }
+  return result;
+};
