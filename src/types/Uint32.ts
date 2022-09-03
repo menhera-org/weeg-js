@@ -47,23 +47,3 @@ export const toUint32 = (value: number): Uint32 => (value >>> 0) as Uint32;
   }
   return result;
 };
-
-/**
- * Equivalent to `toUint32(~value)`.
- */
-export const not = (value: Uint32): Uint32 => toUint32(~value);
-
-/**
- * Equivalent to `toUint32(value1 ^ value2)`.
- */
-export const xor = (value1: Uint32, value2: Uint32): Uint32 => toUint32(value1 ^ value2);
-
-/**
- * Equivalent to `toUint32(value1 & value2)`.
- */
-export const and = (value1: Uint32, value2: Uint32): Uint32 => toUint32(value1 & value2);
-
-/**
- * Equivalent to `toUint32(value1 | value2)`.
- */
-export const or = (value1: Uint32, value2: Uint32): Uint32 => toUint32(value1 | value2);
