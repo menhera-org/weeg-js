@@ -21,5 +21,16 @@
 type Opaque<T, K> = T & { __opaque__: K };
 export type Int32 = Opaque<number, 'Int32'>;
 
+/**
+ * Test if a value is an Int32. This throws on bigints (use Number(bigint)).
+ * @param value The number to test.
+ * @returns true if the value is an Int32.
+ */
 export const isInt32 = (value: number): value is Int32 => Object.is(value, 0|value);
+
+/**
+ * Converts a value to an Int32. This throws on bigints (use Number(bigint)).
+ * @param value The number to convert to an Int32.
+ * @returns the Int32 value.
+ */
 export const toInt32 = (value: number): Int32 => (0|value) as Int32;

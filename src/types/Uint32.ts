@@ -21,7 +21,18 @@
 type Opaque<T, K> = T & { __opaque__: K };
 export type Uint32 = Opaque<number, 'Uint32'>;
 
+/**
+ * Test if a value is a Uint32. This throws on bigints (use Number(bigint)).
+ * @param value The number to test.
+ * @returns true if the value is a Uint32.
+ */
 export const isUint32 = (value: number): value is Uint32 => Object.is(value, toUint32(value));
+
+/**
+ * Converts a value to a Uint32. This throws on bigints (use Number(bigint)).
+ * @param value The number to convert to a Uint32.
+ * @returns the Uint32 value.
+ */
 export const toUint32 = (value: number): Uint32 => (value >>> 0) as Uint32;
 
 /**
