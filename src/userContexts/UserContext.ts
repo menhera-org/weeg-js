@@ -48,6 +48,10 @@ export class UserContext {
     return new UserContext(id, '', '', '', '', '', defined);
   }
 
+  public static isCookieStoreIdPrivateBrowsing(cookieStoreId: string): boolean {
+    return cookieStoreId == 'firefox-private';
+  }
+
   /**
    * Converts a cookie store ID to a user context ID.
    */
@@ -66,9 +70,12 @@ export class UserContext {
   /**
    * Converts a user context ID to a cookie store ID.
    */
-  public static toCookieStoreId(userContextId: Uint32.Uint32): string {
+  public static toCookieStoreId(userContextId: Uint32.Uint32, privateBrowsingId = 0 as Uint32.Uint32): string {
     if (userContextId < 0) {
       throw new TypeError('Invalid user context ID');
+    }
+    if (privateBrowsingId > 0) {
+      return 'firefox-private';
     }
     if (userContextId == 0) {
       return 'firefox-default';
@@ -80,6 +87,11 @@ export class UserContext {
    * The user context ID for the identity.
    */
   public readonly id: Uint32.Uint32;
+
+  /**
+   * 1 if private browsing is enabled, 0 otherwise.
+   */
+  public readonly privateBrowsingId = 0 as Uint32.Uint32;
 
   /**
    * Name of the identity.
@@ -111,10 +123,15 @@ export class UserContext {
    */
   public readonly defined: boolean;
 
+  public static createPrivateBrowsing(): UserContext {
+    const userContext = new UserContext(0 as Uint32.Uint32, '', '', '', '', '', true, 1 as Uint32.Uint32);
+    return userContext;
+  }
+
   /**
    * This is not intended to be called directly.
    */
-  public constructor(id: Uint32.Uint32, name: string, color: string, colorCode: string, icon: string, iconUrl: string, defined = true) {
+  public constructor(id: Uint32.Uint32, name: string, color: string, colorCode: string, icon: string, iconUrl: string, defined = true, privateBrowsingId = 0 as Uint32.Uint32) {
     if (!UserContext.validateUserContextId(id)) {
       throw new TypeError('Invalid user context id');
     }
@@ -125,6 +142,7 @@ export class UserContext {
     this.icon = icon;
     this.iconUrl = iconUrl;
     this.defined = defined;
+    this.privateBrowsingId = privateBrowsingId;
   }
 
   /**
@@ -138,7 +156,7 @@ export class UserContext {
    * Returns false for unremovable identities.
    */
   public isRemovable(): boolean {
-    return 0 != this.id;
+    return 0 != this.id && 0 == this.privateBrowsingId;
   }
 
   /**
