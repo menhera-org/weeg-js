@@ -123,6 +123,10 @@ export class UserContext {
    */
   public readonly defined: boolean;
 
+  /**
+   * Returns a UserContext for private browsing.
+   * @returns a UserContext for private browsing.
+   */
   public static createPrivateBrowsing(): UserContext {
     const userContext = new UserContext(0 as Uint32.Uint32, '', '', '', '', '', true, 1 as Uint32.Uint32);
     return userContext;
