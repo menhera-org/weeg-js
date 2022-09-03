@@ -154,11 +154,11 @@ export class UserContext {
   /**
    * Removes this identity forever.
    */
-  public async remove(): Promise<void> {
+  public async remove(removeBrowsingData = true): Promise<void> {
     if (!this.isRemovable()) {
       throw new TypeError('This container cannot be deleted');
     }
-    await this.removeBrowsingData();
+    if (removeBrowsingData) await this.removeBrowsingData();
     await browser.contextualIdentities.remove(this.cookieStoreId);
   }
 
