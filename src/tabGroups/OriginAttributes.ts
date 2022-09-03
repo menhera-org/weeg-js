@@ -46,10 +46,10 @@ export class OriginAttributes {
           attrs.firstpartyDomain = value;
           break;
         case 'userContextId':
-          attrs.userContextId = Uint32.toUint32(Number(value));
+          attrs.userContextId = Uint32.fromString(value);
           break;
         case 'privateBrowsingId':
-          attrs.privateBrowsingId = Uint32.toUint32(Number(value));
+          attrs.privateBrowsingId = Uint32.fromString(value);
           break;
         default:
           throw new Error(`OriginAttributes.fromString: invalid string: ${str}`);
