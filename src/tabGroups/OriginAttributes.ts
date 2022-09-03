@@ -23,6 +23,10 @@ import { Uint32 } from "../types";
 export class OriginAttributes {
   public static readonly DEFAULT = new OriginAttributes();
 
+  private static readonly DEFAULT_STORE = 'firefox-default';
+  private static readonly PRIVATE_STORE = 'firefox-private';
+  private static readonly CONTAINER_STORE = 'firefox-container-';
+
   public readonly firstpartyDomain: string;
   public readonly userContextId: Uint32.Uint32;
   public readonly privateBrowsingId: Uint32.Uint32;
@@ -59,6 +63,20 @@ export class OriginAttributes {
     return new OriginAttributes(attrs.firstpartyDomain, attrs.userContextId, attrs.privateBrowsingId);
   }
 
+  public static fromCookieStoreId(cookieStoreId: string): OriginAttributes {
+    if (cookieStoreId === OriginAttributes.DEFAULT_STORE) {
+      return OriginAttributes.DEFAULT;
+    }
+    if (cookieStoreId === OriginAttributes.PRIVATE_STORE) {
+      return new OriginAttributes(undefined, undefined, 1 as Uint32.Uint32);
+    }
+    if (cookieStoreId.startsWith(OriginAttributes.CONTAINER_STORE)) {
+      const userContextId = Uint32.fromString(cookieStoreId.slice(OriginAttributes.CONTAINER_STORE.length));
+      return new OriginAttributes(undefined, userContextId, undefined);
+    }
+    throw new Error(`OriginAttributes.fromCookieStoreId: invalid cookieStoreId: ${cookieStoreId}`);
+  }
+
   public constructor(firstpartyDomain = '', userContextId = 0 as Uint32.Uint32, privateBrowsingId = 0 as Uint32.Uint32) {
     if (userContextId != 0 && privateBrowsingId != 0) {
       throw new Error('UserContextId must be 0 for private browsing');
@@ -78,12 +96,12 @@ export class OriginAttributes {
 
   public get cookieStoreId(): string {
     if (this.isPrivateBrowsing()) {
-      return 'firefox-private';
+      return OriginAttributes.PRIVATE_STORE;
     }
     if (this.userContextId === 0) {
-      return 'firefox-default';
+      return OriginAttributes.DEFAULT_STORE;
     }
-    return `firefox-container-${this.userContextId}`;
+    return OriginAttributes.CONTAINER_STORE + this.userContextId;
   }
 
   public equals(other: OriginAttributes): boolean {
