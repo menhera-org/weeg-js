@@ -139,6 +139,9 @@ export class UserContext {
     if (!UserContext.validateUserContextId(id)) {
       throw new TypeError('Invalid user context id');
     }
+    if (privateBrowsingId > 0 && id != 0) {
+      throw new TypeError('UserContextId must be 0 for private browsing');
+    }
     this.id = id;
     this.name = name;
     this.color = color;
