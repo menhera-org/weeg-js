@@ -22,9 +22,7 @@ type Opaque<T, K> = T & { __opaque__: K };
 export type Uint32 = Opaque<number, 'Uint32'>;
 
 export const isUint32 = (value: number): value is Uint32 => Object.is(value, toUint32(value));
-export const toUint32 = (value: number): Uint32 => {
-  return (value >>> 0) as Uint32;
-};
+export const toUint32 = (value: number): Uint32 => (value >>> 0) as Uint32;
 
 /**
  * Equivalent to `toUint32(~value)`.
