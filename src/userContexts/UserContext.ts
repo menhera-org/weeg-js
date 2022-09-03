@@ -158,6 +158,17 @@ export class UserContext {
     if (!this.isRemovable()) {
       throw new TypeError('This container cannot be deleted');
     }
+    await this.removeBrowsingData();
     await browser.contextualIdentities.remove(this.cookieStoreId);
+  }
+
+  public async removeBrowsingData(): Promise<void> {
+    await browser.browsingData.remove({
+      cookieStoreId: this.cookieStoreId,
+    }, {
+      cookies: true,
+      localStorage: true, // not supported on old Firefox
+      indexedDB: true,
+    });
   }
 }
