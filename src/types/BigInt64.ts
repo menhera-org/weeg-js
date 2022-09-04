@@ -18,8 +18,8 @@
   limitations under the License.
 */
 
-type Opaque<T, K> = T & { __opaque__: K };
-export type BigInt64 = Opaque<bigint, 'BigInt64'>;
+declare const BIGINT64: unique symbol;
+export type BigInt64 = bigint & { [BIGINT64]: never };
 
 const arr = new BigInt64Array(1);
 

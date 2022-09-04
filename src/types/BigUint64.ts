@@ -18,11 +18,12 @@
   limitations under the License.
 */
 
-type Opaque<T, K> = T & { __opaque__: K };
-export type BigUint64 = Opaque<bigint, 'BigUint64'>;
+declare const BIGUINT64: unique symbol;
+export type BigUint64 = bigint & { [BIGUINT64]: never };
 
+const arr = new BigUint64Array(1);
 export const isBigUint64 = (value: bigint): value is BigUint64 => value === toBigUint64(value);
 export const toBigUint64 = (value: bigint): BigUint64 => {
-  const intValue = 0xffffffffffffffffn & value;
-  return intValue as BigUint64;
+  arr[0] = value;
+  return arr[0] as BigUint64;
 };

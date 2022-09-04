@@ -18,8 +18,8 @@
   limitations under the License.
 */
 
-type Opaque<T, K> = T & { __opaque__: K };
-export type Int32 = Opaque<number, 'Int32'>;
+declare const INT32: unique symbol;
+export type Int32 = number & { [INT32]: never };
 
 /**
  * Test if a value is an Int32. This throws on bigints.
