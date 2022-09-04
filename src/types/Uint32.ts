@@ -21,6 +21,9 @@
 declare const UINT32: unique symbol;
 export type Uint32 = number & { [UINT32]: never };
 
+export const MIN: Uint32 = 0 as Uint32;
+export const MAX: Uint32 = (-1 >>> 0) as Uint32;
+
 /**
  * Test if a value is a Uint32. This throws on bigints.
  * @param value The number to test.
